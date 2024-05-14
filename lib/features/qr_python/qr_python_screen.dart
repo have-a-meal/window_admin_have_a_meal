@@ -18,7 +18,7 @@ class _QrPythonScreenState extends State<QrPythonScreen> {
           ElevatedButton.icon(
             onPressed: () async {},
             icon: const Icon(Icons.qr_code_2),
-            label: const Text("QR 스캐너 실행"),
+            label: const Text("QR 식권 인증 실행"),
           ),
         ],
       ),
