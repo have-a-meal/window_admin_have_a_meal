@@ -20,5 +20,5 @@
 <img src="https://github.com/have-a-meal/excel_have_a_meal/assets/77985708/3133aaa5-3d24-470e-b425-7998464e8d77.png"  width="500" height="300"/>
 
 ## 액셀 / 메뉴 등록
-<img src="https://github.com/have-a-meal/excel_have_a_meal/assets/77985708/194f3c07-6ca8-4d3c-8fc7-d4552065529e.png"  width="500" height="300"/>
-<img src="https://github.com/have-a-meal/excel_have_a_meal/assets/77985708/2b4f150e-513d-4412-9ff7-25dccf2f5415.png"  width="500" height="300"/>
+<img src="https://github.com/have-a-meal/window_excel_have_a_meal/assets/77985708/96539dce-cade-408f-9713-892a26b7e6e9.png"  width="500" height="300"/>
+<img src="https://github.com/have-a-meal/window_excel_have_a_meal/assets/77985708/b6413c18-395b-4823-80e2-7e83d9203d64.png"  width="500" height="300"/>
