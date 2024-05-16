@@ -62,36 +62,28 @@ class _MenuInsertScreenState extends State<MenuInsertScreen> {
                           "중식": [],
                           "석식": [],
                         });
-                _meals[dateString]![courseType]!.add(menuModel);
+                _meals[dateString]![sheetName]!.add(menuModel);
               }
             }
           }
         }
       }
       setState(() {});
+      // _meals.forEach((key, value1) {
+      //   value1.forEach((key, value2) {
+      //     for (var element in value2) {
+      //       print(
+      //           "${element.date}, ${element.menuCourse}, ${element.menuTime}, ${element.menuList}}");
+      //     }
+      //   });
+      // });
     } else {
       print('파일 선택이 취소되었습니다.');
     }
   }
 
   Future<void> _refreshExcel() async {
-    _meals = {
-      "조식": {
-        "A": [],
-        "B": [],
-        "C": [],
-      },
-      "중식": {
-        "A": [],
-        "B": [],
-        "C": [],
-      },
-      "석식": {
-        "A": [],
-        "B": [],
-        "C": [],
-      },
-    };
+    _meals = {};
     setState(() {});
   }
 
@@ -105,7 +97,6 @@ class _MenuInsertScreenState extends State<MenuInsertScreen> {
         ),
         child: SingleChildScrollView(
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
@@ -125,6 +116,7 @@ class _MenuInsertScreenState extends State<MenuInsertScreen> {
                 ],
               ),
               const SizedBox(height: 10),
+              const Divider(),
               ..._buildMealTables(),
             ],
           ),
@@ -139,7 +131,7 @@ class _MenuInsertScreenState extends State<MenuInsertScreen> {
     _meals.forEach((date, meals) {
       mealTables.add(
         Text(
-          date,
+          "[$date]",
           style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -148,57 +140,106 @@ class _MenuInsertScreenState extends State<MenuInsertScreen> {
       );
 
       mealTables.add(_buildMealTable(meals, date));
+      mealTables.add(const Divider());
     });
 
     return mealTables;
   }
 
+  // Widget _buildMealTable(Map<String, List<MenuModel>> meals, String date) {
+  //   // 모든 식사 유형과 메뉴 모델을 하나의 리스트로 통합
+  //   List<DataRow> allMealRows = [];
+  //   meals.forEach((mealType, menuModels) {
+  //     for (var menuModel in menuModels) {
+  //       allMealRows.add(
+  //         DataRow(
+  //           cells: <DataCell>[
+  //             DataCell(Text(menuModel.menuTime)),
+  //             DataCell(Text(menuModel.menuCourse)),
+  //             DataCell(Text(menuModel.menuList.join(', '))),
+  //           ],
+  //         ),
+  //       );
+  //     }
+  //   });
+
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       Text(
+  //         date,
+  //         style: const TextStyle(
+  //           fontSize: 20,
+  //           fontWeight: FontWeight.bold,
+  //         ),
+  //       ),
+  //       DataTable(
+  //         border: TableBorder.all(color: Colors.grey),
+  //         headingRowColor:
+  //             MaterialStateColor.resolveWith((states) => Colors.grey.shade300),
+  //         columns: const <DataColumn>[
+  //           DataColumn(label: Text('시간')),
+  //           DataColumn(label: Text('코스')),
+  //           DataColumn(label: Text('메뉴')),
+  //         ],
+  //         rows: allMealRows,
+  //       ),
+  //     ],
+  //   );
+  // }
+
   Widget _buildMealTable(Map<String, List<MenuModel>> meals, String date) {
     return Column(
-      children: meals.entries.map((entry) {
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: meals.entries
+          .where((entry) => entry.value.isNotEmpty) // 빈 리스트를 건너뛰기 위해 추가
+          .map((entry) {
         String mealType = entry.key;
         List<MenuModel> menuModels = entry.value;
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              mealType,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                mealType,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: mealType == "조식"
+                      ? Colors.lightGreen
+                      : mealType == "중식"
+                          ? Colors.lightBlue
+                          : Colors.purple,
+                ),
               ),
-            ),
-            DataTable(
-              border: TableBorder.all(color: Colors.grey),
-              headingRowColor: MaterialStateColor.resolveWith(
-                  (states) => Colors.grey.shade300),
-              columns: const <DataColumn>[
-                DataColumn(label: Text('시간')),
-                DataColumn(label: Text('코스')),
-                DataColumn(label: Text('메뉴')),
-              ],
-              rows: menuModels
-                  .map(
-                    (menuModel) => DataRow(
-                      cells: <DataCell>[
-                        DataCell(
-                          Text(menuModel.menuTime),
-                        ),
-                        DataCell(
-                          Text(menuModel.menuCourse),
-                        ),
-                        DataCell(
-                          Text(
-                            menuModel.menuList.join(', '),
+              DataTable(
+                border: TableBorder.all(color: Colors.grey),
+                headingRowColor: MaterialStateColor.resolveWith(
+                    (states) => Colors.grey.shade300),
+                columns: const <DataColumn>[
+                  DataColumn(label: Text('코스')),
+                  DataColumn(label: Text('메뉴')),
+                ],
+                rows: menuModels
+                    .map(
+                      (menuModel) => DataRow(
+                        cells: <DataCell>[
+                          DataCell(
+                            Text(menuModel.menuCourse),
                           ),
-                        ),
-                      ],
-                    ),
-                  )
-                  .toList(),
-            ),
-          ],
+                          DataCell(
+                            Text(
+                              menuModel.menuList.join(', '),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                    .toList(),
+              ),
+            ],
+          ),
         );
       }).toList(),
     );
