@@ -20,13 +20,14 @@ class _MenuInsertScreenState extends State<MenuInsertScreen> {
   Future<void> _readExcel() async {
     _meals = {};
 
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['xlsx'],
-      allowMultiple: false,
-    );
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['xlsx'],
+        allowMultiple: false,
+      );
 
-    if (result != null) {
+      if (result == null) return;
       File file = File(result.files.single.path!);
       final bytes = file.readAsBytesSync();
       final decoder = SpreadsheetDecoder.decodeBytes(bytes);
@@ -69,7 +70,7 @@ class _MenuInsertScreenState extends State<MenuInsertScreen> {
         }
       }
       setState(() {});
-    } else {
+    } catch (e) {
       print('파일 선택이 취소되었습니다.');
     }
   }
