@@ -55,6 +55,9 @@ dependencies:
   # 한국어 적용 라이브러리
   flutter_localization: ^0.2.0
 
+  # 사이드 메뉴 라이브러리
+  easy_sidemenu: ^0.6.0
+
   # 파일 선택
   file_picker: ^8.0.3
 

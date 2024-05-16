@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:window_have_a_meal/features/account/sign_in_screen.dart';
 import 'package:window_have_a_meal/features/menu_insert/menu_insert_screen_test.dart';
 import 'package:window_have_a_meal/features/qr_python/qr_python_screen.dart';
+import 'package:easy_sidemenu/easy_sidemenu.dart';
 
 class NavigationScreen extends StatefulWidget {
   static const routeName = "navigation";
@@ -14,35 +15,9 @@ class NavigationScreen extends StatefulWidget {
 }
 
 class _NavigationScreenState extends State<NavigationScreen> {
-  // 사이드바의 상태를 관리하는 변수
   bool isExpanded = true;
-  // 현재 선택된 인덱스를 저장하는 변수
-  int selectedIndex = 0;
-
-  ButtonStyle _sideButtonStyle(int index) {
-    return ButtonStyle(
-      alignment: Alignment.centerLeft,
-      backgroundColor: MaterialStatePropertyAll(
-        selectedIndex == index ? Colors.blue : Colors.blue.shade300,
-      ),
-      shape: const MaterialStatePropertyAll(
-        RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(
-              6,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _onTap(int index) {
-    if (selectedIndex == index) return;
-    setState(() {
-      selectedIndex = index;
-    });
-  }
+  int _selectedIndex = 0;
+  bool _isExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -60,75 +35,68 @@ class _NavigationScreenState extends State<NavigationScreen> {
         ],
       ),
       body: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Container(
-            width: isExpanded ? 130 : 50, // 늘어난 상태면 150, 아니면 50
-            height: MediaQuery.of(context).size.height,
-            color: Colors.blue.shade300,
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 4, right: 4),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    IconButton(
-                      icon: Icon(
-                        isExpanded ? Icons.chevron_left : Icons.chevron_right,
-                        color: Colors.grey.shade800,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          isExpanded = !isExpanded; // 상태 토글
-                        });
-                      },
-                    ),
-                    if (isExpanded) ...[
-                      // 메뉴 등록 버튼과 식권 인증 버튼을 표시
-                      TextButton.icon(
-                        onPressed: () => _onTap(0),
-                        icon: Icon(Icons.playlist_add_rounded,
-                            color: Colors.grey.shade800),
-                        label: Text('메뉴 등록',
-                            style: TextStyle(color: Colors.grey.shade800)),
-                      ),
-                      TextButton.icon(
-                        onPressed: () => _onTap(1),
-                        icon:
-                            Icon(Icons.qr_code_2, color: Colors.grey.shade800),
-                        label: Text('식권 인증',
-                            style: TextStyle(color: Colors.grey.shade800)),
-                      ),
-                    ] else ...[
-                      IconButton(
-                        icon: Icon(
-                          Icons.playlist_add_rounded,
-                          color: Colors.grey.shade800,
-                        ),
-                        onPressed: () => _onTap(0),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.qr_code_2,
-                          color: Colors.grey.shade800,
-                        ),
-                        onPressed: () => _onTap(1),
-                      ),
-                    ],
-                  ],
-                ),
+          NavigationRail(
+            selectedIndex: _selectedIndex,
+            groupAlignment: -1.0,
+            onDestinationSelected: (int index) {
+              if (_selectedIndex == index) return;
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+            extended: _isExpanded,
+            indicatorShape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            minExtendedWidth: 150,
+            leading: IconButton(
+              onPressed: () {
+                setState(() {
+                  _isExpanded = !_isExpanded;
+                });
+              },
+              icon: Icon(
+                _isExpanded
+                    ? Icons.keyboard_double_arrow_left
+                    : Icons.keyboard_double_arrow_right,
               ),
             ),
+            destinations: const <NavigationRailDestination>[
+              NavigationRailDestination(
+                icon: Icon(Icons.playlist_add_rounded),
+                label: Text('메뉴 등록'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.qr_code_2),
+                label: Text('식권 인증'),
+              ),
+            ],
           ),
+          const VerticalDivider(thickness: 1, width: 1),
+          // Expanded(
+          //   child: IndexedStack(
+          //     index: _selectedIndex,
+          //     children: const [
+          //       MenuInsertScreen(),
+          //       QrPythonScreen(),
+          //     ],
+          //   ),
+          // ),
           Expanded(
-            child: IndexedStack(
-              index: selectedIndex,
-              children: const [
-                MenuInsertScreen(),
-                QrPythonScreen(),
+            child: Stack(
+              children: [
+                Offstage(
+                  offstage: _selectedIndex != 0,
+                  child: const MenuInsertScreen(),
+                ),
+                Offstage(
+                  offstage: _selectedIndex != 1,
+                  child: const QrPythonScreen(),
+                ),
               ],
             ),
-          ),
+          )
         ],
       ),
     );
