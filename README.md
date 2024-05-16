@@ -1,16 +1,24 @@
-# window_have_a_meal
+# 프로젝트 정보
 
-A new Flutter project.
+<a><img src="https://img.shields.io/badge/-Flutter-387ADF?style=flat-plastic&logo=Flutter&logoColor=white"/>
+<img src="https://img.shields.io/badge/-Provider-FBA834?style=flat-plastic&logo=Provider&logoColor=white"/>
+<img src="https://img.shields.io/badge/-Github-black?style=flat-plastic&logo=Github&logoColor=white"/></a>
 
-## Getting Started
+개발자 : 이재현
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+프로젝트 한줄소개 : 관리자가 액셀 파일을 통하여 메뉴를 등록하는 프로그램
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookboogit pull origin YOUR_BRANCH_NAMEk: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+프로젝트 화면 구조
+- 로그인
+- 액셀파일을 통해 메뉴 등록
+
+
+# 실제 화면
+## 로그인 / 회원가입
+<img src="https://github.com/have-a-meal/excel_have_a_meal/assets/77985708/3133aaa5-3d24-470e-b425-7998464e8d77.png"  width="500" height="300"/>
+
+## 액셀 / 메뉴 등록
+<img src="https://github.com/have-a-meal/excel_have_a_meal/assets/77985708/194f3c07-6ca8-4d3c-8fc7-d4552065529e.png"  width="500" height="300"/>
+<img src="https://github.com/have-a-meal/excel_have_a_meal/assets/77985708/2b4f150e-513d-4412-9ff7-25dccf2f5415.png"  width="500" height="300"/>
