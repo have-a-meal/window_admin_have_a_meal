@@ -1,11 +1,13 @@
 class MenuModel {
   DateTime date;
-  String courseName;
+  String menuTime;
+  String menuCourse;
   List<String> menuList;
 
   MenuModel({
     required this.date,
-    required this.courseName,
+    required this.menuTime,
+    required this.menuCourse,
     required this.menuList,
   });
 }
