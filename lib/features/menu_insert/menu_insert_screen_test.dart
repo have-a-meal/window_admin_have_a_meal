@@ -146,48 +146,6 @@ class _MenuInsertScreenState extends State<MenuInsertScreen> {
     return mealTables;
   }
 
-  // Widget _buildMealTable(Map<String, List<MenuModel>> meals, String date) {
-  //   // 모든 식사 유형과 메뉴 모델을 하나의 리스트로 통합
-  //   List<DataRow> allMealRows = [];
-  //   meals.forEach((mealType, menuModels) {
-  //     for (var menuModel in menuModels) {
-  //       allMealRows.add(
-  //         DataRow(
-  //           cells: <DataCell>[
-  //             DataCell(Text(menuModel.menuTime)),
-  //             DataCell(Text(menuModel.menuCourse)),
-  //             DataCell(Text(menuModel.menuList.join(', '))),
-  //           ],
-  //         ),
-  //       );
-  //     }
-  //   });
-
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       Text(
-  //         date,
-  //         style: const TextStyle(
-  //           fontSize: 20,
-  //           fontWeight: FontWeight.bold,
-  //         ),
-  //       ),
-  //       DataTable(
-  //         border: TableBorder.all(color: Colors.grey),
-  //         headingRowColor:
-  //             MaterialStateColor.resolveWith((states) => Colors.grey.shade300),
-  //         columns: const <DataColumn>[
-  //           DataColumn(label: Text('시간')),
-  //           DataColumn(label: Text('코스')),
-  //           DataColumn(label: Text('메뉴')),
-  //         ],
-  //         rows: allMealRows,
-  //       ),
-  //     ],
-  //   );
-  // }
-
   Widget _buildMealTable(Map<String, List<MenuModel>> meals, String date) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
