@@ -69,14 +69,6 @@ class _MenuInsertScreenState extends State<MenuInsertScreen> {
         }
       }
       setState(() {});
-      // _meals.forEach((key, value1) {
-      //   value1.forEach((key, value2) {
-      //     for (var element in value2) {
-      //       print(
-      //           "${element.date}, ${element.menuCourse}, ${element.menuTime}, ${element.menuList}}");
-      //     }
-      //   });
-      // });
     } else {
       print('파일 선택이 취소되었습니다.');
     }
