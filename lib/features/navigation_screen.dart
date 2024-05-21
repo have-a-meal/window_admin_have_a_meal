@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:window_have_a_meal/features/account/sign_in_screen.dart';
 import 'package:window_have_a_meal/features/menu_insert/menu_insert_screen_test.dart';
 import 'package:window_have_a_meal/features/qr_python/qr_python_screen.dart';
-import 'package:easy_sidemenu/easy_sidemenu.dart';
 
 class NavigationScreen extends StatefulWidget {
   static const routeName = "navigation";

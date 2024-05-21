@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:intl/intl.dart';
 import 'package:spreadsheet_decoder/spreadsheet_decoder.dart';
 import 'package:window_have_a_meal/models/menu_model.dart';
 
@@ -80,6 +78,8 @@ class _MenuInsertScreenState extends State<MenuInsertScreen> {
     setState(() {});
   }
 
+  Future<void> _onInsertMenu() async {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,18 +93,28 @@ class _MenuInsertScreenState extends State<MenuInsertScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ElevatedButton.icon(
-                    onPressed: _readExcel,
-                    icon: const Icon(Icons.add),
-                    label: const Text("액셀 등록"),
+                  Row(
+                    children: [
+                      ElevatedButton.icon(
+                        onPressed: _readExcel,
+                        icon: const Icon(Icons.add),
+                        label: const Text("액셀 등록"),
+                      ),
+                      const SizedBox(width: 10),
+                      ElevatedButton.icon(
+                        onPressed: _refreshExcel,
+                        icon: const Icon(Icons.refresh),
+                        label: const Text("초기화"),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 10),
                   ElevatedButton.icon(
-                    onPressed: _refreshExcel,
+                    onPressed: _onInsertMenu,
                     icon: const Icon(Icons.refresh),
-                    label: const Text("초기화"),
+                    label: const Text("메뉴 등록"),
                   ),
                 ],
               ),

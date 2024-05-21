@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -26,7 +24,7 @@ class MyApp extends StatelessWidget {
         Locale('ko', 'KR'),
       ],
       debugShowCheckedModeBanner: false,
-      title: 'window_have_a_meal',
+      title: 'window_admin_have_a_meal',
       theme: ThemeData(
         useMaterial3: true,
         colorSchemeSeed: Colors.blue,
