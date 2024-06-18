@@ -1,5 +1,5 @@
 class MenuModel {
-  DateTime date;
+  String date;
   String menuTime;
   String menuCourse;
   List<String> menuList;

@@ -1,9 +1,14 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:spreadsheet_decoder/spreadsheet_decoder.dart';
+import 'package:window_have_a_meal/constants/http_ip.dart';
 import 'package:window_have_a_meal/models/menu_model.dart';
+import 'package:http/http.dart' as http;
 
 class MenuInsertScreen extends StatefulWidget {
   const MenuInsertScreen({super.key});
@@ -14,6 +19,7 @@ class MenuInsertScreen extends StatefulWidget {
 
 class _MenuInsertScreenState extends State<MenuInsertScreen> {
   Map<String, Map<String, List<MenuModel>>> _meals = {};
+  late File _excelFile;
 
   Future<void> _readExcel() async {
     _meals = {};
@@ -27,6 +33,7 @@ class _MenuInsertScreenState extends State<MenuInsertScreen> {
 
       if (result == null) return;
       File file = File(result.files.single.path!);
+      _excelFile = File(result.files.single.path!);
       final bytes = file.readAsBytesSync();
       final decoder = SpreadsheetDecoder.decodeBytes(bytes);
 
@@ -40,28 +47,27 @@ class _MenuInsertScreenState extends State<MenuInsertScreen> {
               var cellData = row[columnIndex];
               if (cellData != null && cellData != "null") {
                 var dateCell = table.rows[0][columnIndex];
-                var dateParts = dateCell.split(' ');
-                var year = DateTime.now().year; // 현재의 해를 가져옵니다.
-                var dateString =
-                    "$year-${dateParts[0].substring(0, 2)}-${dateParts[0].substring(3, 5)}";
+                // var dateParts = dateCell.split(' ');
+                // var year = DateTime.now().year; // 현재의 해를 가져옵니다.
+                // var dateString =
+                //     "$year-${dateParts[0].substring(0, 2)}-${dateParts[0].substring(3, 5)}";
 
                 var menuList = cellData.split('\n');
                 MenuModel menuModel = MenuModel(
-                  date: DateTime(year, int.parse(dateParts[0].substring(0, 2)),
-                      int.parse(dateParts[0].substring(3, 5))),
+                  date: dateCell,
                   menuTime: sheetName,
                   menuCourse: courseType,
                   menuList: menuList,
                 );
 
                 _meals.putIfAbsent(
-                    dateString,
+                    dateCell,
                     () => {
                           "조식": [],
                           "중식": [],
                           "석식": [],
                         });
-                _meals[dateString]![sheetName]!.add(menuModel);
+                _meals[dateCell]![sheetName]!.add(menuModel);
               }
             }
           }
@@ -69,6 +75,7 @@ class _MenuInsertScreenState extends State<MenuInsertScreen> {
       }
       setState(() {});
     } catch (e) {
+      print(e);
       print('파일 선택이 취소되었습니다.');
     }
   }
@@ -78,7 +85,51 @@ class _MenuInsertScreenState extends State<MenuInsertScreen> {
     setState(() {});
   }
 
-  Future<void> _onInsertMenu() async {}
+  Future<void> _onInsertMenu() async {
+    // final url = Uri.parse("${HttpIp.apiUrl}/manager/excel");
+
+    // 파일 경로를 통해 formData 생성
+    var dio = Dio();
+    var formData = FormData.fromMap(
+        {'file': await MultipartFile.fromFile(_excelFile.path)});
+
+    // 업로드 요청
+    final response =
+        await dio.post("${HttpIp.apiUrl}/manager/excel", data: formData);
+
+    if (response.statusCode! >= 200 && response.statusCode! < 300) {
+      print(response);
+
+      // context.replaceNamed(NavigationScreen.routeName);
+    } else {
+      if (!mounted) return;
+      HttpIp.errorPrint(
+        context: context,
+        title: "통신 오류",
+        message: "파일 전송 실패!",
+      );
+    }
+
+    // // Multipart request 생성
+    // var request = http.MultipartRequest('POST', url)
+    //   ..files.add(await http.MultipartFile.fromPath('file', _excelFile.path));
+
+    // // 요청 보내기
+    // var response = await request.send();
+
+    // if (response.statusCode >= 200 && response.statusCode < 300) {
+    //   print(response);
+
+    //   // context.replaceNamed(NavigationScreen.routeName);
+    // } else {
+    //   if (!mounted) return;
+    //   HttpIp.errorPrint(
+    //     context: context,
+    //     title: "통신 오류",
+    //     message: "파일 전송 실패!",
+    //   );
+    // }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +185,7 @@ class _MenuInsertScreenState extends State<MenuInsertScreen> {
     _meals.forEach((date, meals) {
       mealTables.add(
         Text(
-          "[$date]",
+          "[${date.split('T')[0]}]",
           style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -176,7 +227,7 @@ class _MenuInsertScreenState extends State<MenuInsertScreen> {
               ),
               DataTable(
                 border: TableBorder.all(color: Colors.grey),
-                headingRowColor: MaterialStateColor.resolveWith(
+                headingRowColor: WidgetStateColor.resolveWith(
                     (states) => Colors.grey.shade300),
                 columns: const <DataColumn>[
                   DataColumn(label: Text('코스')),

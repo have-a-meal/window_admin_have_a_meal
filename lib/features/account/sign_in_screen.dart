@@ -13,9 +13,11 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final TextEditingController _idController = TextEditingController();
+  final TextEditingController _idController =
+      TextEditingController(text: "22471026");
   final FocusNode _idFocusNode = FocusNode();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _passwordController =
+      TextEditingController(text: "Test@1234");
   final FocusNode _pwFocusNode = FocusNode();
 
   bool _rememberMe = false;
@@ -75,26 +77,10 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   void _handleLogin() async {
-    // final url = Uri.parse("${HttpIp.httpIp}/marine/users/auth");
-    // final headers = {'Content-Type': 'application/json'};
-    // final data = {
-    //   'userId': _idController.text.trim(),
-    //   'password': _passwordController.text.trim(),
-    // };
-    // final response =
-    //     await http.post(url, headers: headers, body: jsonEncode(data));
-
-    // if (response.statusCode >= 200 && response.statusCode < 300) {
-
-    // } else {
-    //   if (!mounted) return;
-    //   HttpIp.errorPrint(
-    //     context: context,
-    //     title: "통신 오류",
-    //     message: response.body,
-    //   );
-    // }
-    context.replaceNamed(NavigationScreen.routeName);
+    if (_idController.text.trim() == "22471026" &&
+        _passwordController.text.trim() == "Test@1234") {
+      context.replaceNamed(NavigationScreen.routeName);
+    }
   }
 
   @override
