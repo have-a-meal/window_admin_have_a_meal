@@ -40,7 +40,7 @@
 - http: ^1.2.1 (통신)
 - dio: ^5.4.3+1 (이미지 통신)
 
-# 실제 화면
+# 프로토타입 화면
 ## 로그인 / 회원가입
 <img src="https://github.com/have-a-meal/excel_have_a_meal/assets/77985708/3133aaa5-3d24-470e-b425-7998464e8d77.png"  width="500" height="300"/>
 
